@@ -30,7 +30,7 @@ You can import the table module and use the Table class.
     for item in Table(data, {header}, {aligment}):
         print item
     
-**Get a specific item form the formatted table**
+**Get a specific item from the formatted table**
 
 `Table(data, {header}, {aligment})[2]`
 
