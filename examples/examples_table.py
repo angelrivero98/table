@@ -15,6 +15,15 @@ from table import Table
 conn = sqlite3.connect('customers_db.sqlite')
 cur = conn.cursor()
 cur.execute('SELECT FirstName, LastName, Address FROM customers')
-
-#Print Left Justified
 print Table(cur.fetchall(), tuple(item[0] for item in cur.description), 'left')
+
+# Saving formatted table to text file
+import sqlite3
+from table import Table
+conn = sqlite3.connect('customers_db.sqlite')
+cur = conn.cursor()
+cur.execute('SELECT FirstName, LastName, Address FROM customers')
+data =  Table(cur.fetchall(), tuple(item[0] for item in cur.description), 'center')
+with open(r'customers.txt', 'w') as f:
+    for row in data:
+        f.write(row + '\n')
