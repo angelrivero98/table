@@ -1,13 +1,13 @@
 #-------------------------------------------------------------------------------
 # Name:        table.py
-# Version:     0.25
+# Version:     0.26
 #
 # Purpose:     Input an iterable of data and output it as a formatted table.
 #
 # Author:      Ken Tong
 #
 # Created:     31/07/2015
-# Updated:     10/08/2015
+# Updated:     11/08/2015
 #-------------------------------------------------------------------------------
 
 class Table(object):
@@ -18,15 +18,16 @@ class Table(object):
         """
         Initialize a Table object.
 
-        Arguments:
+        Parameters:
         data: An input iterable of data.
 
         header: A tuple or list specifying the headers for the data. If header
                 is in the data iterable, 'firstrow' must be specified.
 
-        alignment: Alignment of the column. Specify left (default), right or centre.
-                    You can also using the first letter (l, r, or c) to specify
-                    alignment.
+        alignment: Alignment of the column. Specify None (default: text is left
+                    justified and numbers are right justified), left, right
+                    or centre. You can also not supply an argument for None or
+                    use the first letter (l, r, or c) to specify alignment.
 
         Returns:
         results: A tuple with formatted spacing and an underline for the headers.
@@ -43,7 +44,7 @@ class Table(object):
         """
         Get the length of each column for a value of an item in the input iterable.
 
-        Arguments:
+        Parameters:
         data: An input iterable of data.
 
         header: A tuple or list specifying the headers for the data. If header
@@ -73,15 +74,17 @@ class Table(object):
         """
         Function returns alightment character for the output.
 
-        Arguments:
-        alignment: the alignment for the table
+        Parameters:
+        alignment: Alignment of the column. Specify None (default: text is left
+                    justified and numbers are right justified), left, right
+                    or centre. You can also not supply an argument for None or
+                    use the first letter (l, r, or c) to specify alignment.
 
         Returns:
         alignment_char: the alignment character
         """
         if alignment is None:
-            return '<'
-
+            return None
         else:
             alignment_char_dict = {
                 'c': '^',
@@ -92,21 +95,53 @@ class Table(object):
                 'r': '>',
                 'right': '>'
             }
-            return alignment_char_dict.get(alignment.lower(), '<')
+            return alignment_char_dict.get(alignment.lower(), None)
+
+    def _get_output_string(self, data, alignment, column_width_dict):
+        """
+        Create the formatted string to output.
+
+        Parameters
+        data: An input iterable of data.
+
+        alignment: Alignment of the column. Specify None (default: text is left
+                    justified and numbers are right justified), left, right
+                    or centre. You can also not supply an argument for None or
+                    use the first letter (l, r, or c) to specify alignment.
+
+        column_width_dict: A dictionary with the widths of each column from the
+                           input data.
+
+        Returns: The formatted string used to print a line of input data.
+        """
+        # Create the format string based on the data and length of each column.
+        # The first row in the data is used to determine the number of columns.
+        output_list = []
+        alignment_char = self._get_alignment(alignment)
+        if not alignment_char is None:
+            for i in range(0, len(data[0])):
+                output_list.append('{' + str(i) + ':' + alignment_char +
+                    str(column_width_dict[i]) + '}')
+        else:
+            for i in range(0, len(data[0])):
+                output_list.append('{' + str(i) + ':' +
+                    str(column_width_dict[i]) + '}')
+        return ' '.join(output_list)
 
     def table(self, data, header, alignment):
         """
         Output an iterable of data as a table.
 
-        Arguments:
+        Parameters:
         data: An input iterable of data.
 
         header: A tuple or list specifying the headers for the data. If header
                 is in the data iterable, 'firstrow' must be specified.
 
-        alignment: Alignment of the column. Specify left (default), right or centre.
-                    You can also using the first letter (l, r, or c) to specify
-                    alignment.
+        alignment: Alignment of the column. Specify None (default: text is left
+                    justified and numbers are right justified), left, right
+                    or centre. You can also not supply an argument for None or
+                    use the first letter (l, r, or c) to specify alignment.
 
         Returns:
         results: A tuple with formatted spacing and an underline for the headers.
@@ -115,15 +150,11 @@ class Table(object):
         """
         try:
             if isinstance(data, (list, tuple)):
+                # Calculate the column widths
                 column_width_dict = self._get_column_widths(data, header)
 
-                # Create the format string based on the data and length of each column.
-                # The first row in the data is used to determine the number of columns.
-                output_list = []
-                for i in range(0, len(data[0])):
-                    output_list.append('{' + str(i) + ':' + self._get_alignment(self.alignment) +
-                        str(column_width_dict[i]) + '}')
-                output = ' '.join(output_list)
+                # Create the formatted output string
+                output = self._get_output_string(data, alignment, column_width_dict)
 
                 # Create the dashed underline that goes under each column.
                 underline = []
