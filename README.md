@@ -17,7 +17,7 @@ You can import the table module and use the Table class.
 
 **header**: A tuple or list specifying the headers for the data. If header is in the data iterable, 'firstrow' must be specified. {optional}
 
-**alignment**: Alignment of the column. Specify None (default), left right or centre. You can also leave out the argument if specifying None or use the first letter (l, r, or c) to specify alignment. {optional}
+**alignment**: Alignment of the column. Specify None (default), left, right or centre. You can also leave out the argument if specifying None or use the first letter (l, r, or c) to specify alignment. {optional}
 
 ## Using the Formatted Table
 
