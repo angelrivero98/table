@@ -17,22 +17,22 @@ You can import the table module and use the Table class.
 
 **header**: A tuple or list specifying the headers for the data. If header is in the data iterable, 'firstrow' must be specified. {optional}
 
-**alignment**: Alignment of the column. Specify left (default), right or centre. You can also using the first letter (l, r, or c) to specify alignment. {optional}
+**alignment**: Alignment of the column. Specify None (default), left right or centre. You can also leave out the argument if specifying None or use the first letter (l, r, or c) to specify alignment. {optional}
 
 ## Using the Formatted Table
 
 **Print the table to the interpreter**
 
-`print Table(data, {header}, {aligment})`
+`print Table(data, {header}, {alignment})`
 
 **Iterate over the items in formatted table**
 
-    for item in Table(data, {header}, {aligment}):
+    for item in Table(data, {header}, {alignment}):
         print item
     
-**Get a specific item form the formatted table**
+**Get a specific item from the formatted table**
 
-`Table(data, {header}, {aligment})[2]`
+`Table(data, {header}, {alignment})[2]`
 
 _Note: If the created table has headers, items [0] will be the header and [1] will be the header underline._
 
@@ -54,8 +54,6 @@ Output
       Optimus     Prime           Cybertron       
      Sherlock     Holmes      221B Baker Street   
        Rick       Grimes         King County      
-	   
-![Table](img/python-table.png)
 
 ###Saving formatted table to text file
 
@@ -69,3 +67,6 @@ Output
     for row in data:
         f.write(row + '\n')
 
+## Screenshot
+### Using table in PyScripter
+![Table in PyScripter](img/python-table.png)
