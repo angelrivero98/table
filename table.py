@@ -1,13 +1,13 @@
 #-------------------------------------------------------------------------------
 # Name:        table.py
-# Version:     0.26
+# Version:     0.27
 #
 # Purpose:     Input an iterable of data and output it as a formatted table.
 #
 # Author:      Ken Tong
 #
 # Created:     31/07/2015
-# Updated:     11/08/2015
+# Updated:     12/08/2015
 #-------------------------------------------------------------------------------
 
 class Table(object):
@@ -128,6 +128,24 @@ class Table(object):
                     str(column_width_dict[i]) + '}')
         return ' '.join(output_list)
 
+    def _format_data(self, data):
+        """
+        Converts non-integer or no-string data to strings.
+
+        Parameters:
+        data: An input iterable of data.
+
+        Returns:
+        formatted_data: A tuple with non-integer and non-string types converted
+                        to strings.
+        """
+        formatted_data = []
+        for row in data:
+            item_row =  tuple([str(item) if not isinstance(item, (int, str))
+                 else item for item in row])
+            formatted_data.append(item_row)
+        return tuple(formatted_data)
+
     def table(self, data, header, alignment):
         """
         Output an iterable of data as a table.
@@ -150,10 +168,13 @@ class Table(object):
         """
         try:
             if isinstance(data, (list, tuple)):
+                # Format any non-integer and non-string values to string.
+                data = self._format_data(data)
+
                 # Calculate the column widths
                 column_width_dict = self._get_column_widths(data, header)
 
-                # Create the formatted output string
+                # Create the formatted output string.
                 output = self._get_output_string(data, alignment, column_width_dict)
 
                 # Create the dashed underline that goes under each column.
