@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------
 # Name:        table.py
-# Version:     0.27
+# Version:     0.28
 #
 # Purpose:     Input an iterable of data and output it as a formatted table.
 #
@@ -64,10 +64,10 @@ class Table(object):
         for row in data:
             for idx, val in enumerate(row):
                 if len(column_width_dict) < len(row):
-                    column_width_dict[idx] = len(val) + padding
+                    column_width_dict[idx] = len(str(val)) + padding
                 else:
                     if len(str(val)) > column_width_dict[idx]:
-                        column_width_dict[idx] = len(val) + padding
+                        column_width_dict[idx] = len(str(val)) + padding
         return column_width_dict
 
     def _get_alignment(self, alignment):
